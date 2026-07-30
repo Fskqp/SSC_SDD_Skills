@@ -1,0 +1,4 @@
+interface:
+  display_name: "Semantic Spec Compilation"
+  short_description: "Compile SDD/SSC analyst artifacts."
+  default_prompt: "Use SSC to compile this specification into a canonical requirements model, identify gaps, and generate traceable SDD analyst artifacts."
