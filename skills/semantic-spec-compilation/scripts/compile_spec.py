@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -42,6 +43,38 @@ REQUIREMENT_TERMS = (
 )
 
 CLASSIFICATION_TERMS = {
+    "migration": (
+        "migration",
+        "migrate",
+        "cutover",
+        "backfill",
+        "initial load",
+        "data transfer",
+        "миграц",
+        "конвертац",
+        "первичн загруз",
+        "перенос данн",
+    ),
+    "operational": (
+        "runbook",
+        "support procedure",
+        "incident",
+        "on-call",
+        "alerting",
+        "backup",
+        "restore",
+        "deployment",
+        "rollback",
+        "maintenance",
+        "эксплуатац",
+        "регламент поддерж",
+        "инцидент",
+        "оповещен",
+        "резервн копир",
+        "восстановлен",
+        "развертыван",
+        "откат",
+    ),
     "integration": (
         "api",
         "endpoint",
@@ -145,6 +178,8 @@ ID_PREFIX = {
     "ui": "UI",
     "security": "SEC",
     "report": "REP",
+    "migration": "MIG",
+    "operational": "OPS",
 }
 
 
@@ -192,7 +227,7 @@ def extract_sections(lines: list[str]) -> list[Section]:
             sections[-1].end_line = index - 1
         sections.append(
             Section(
-                id=f"SEC-{len(sections) + 1:03d}",
+                id=f"SECTION-{len(sections) + 1:03d}",
                 title=normalize_line(match.group(2)),
                 level=len(match.group(1)),
                 start_line=index,
@@ -203,14 +238,7 @@ def extract_sections(lines: list[str]) -> list[Section]:
     return sections
 
 
-def find_section(sections: list[Section], line_no: int) -> str | None:
-    for section in reversed(sections):
-        if section.start_line <= line_no and (section.end_line is None or line_no <= section.end_line):
-            return section.id
-    return None
-
-
-def extract_candidates(lines: list[str], sections: list[Section]) -> list[dict]:
+def extract_candidates(lines: list[str]) -> list[dict]:
     counters = {prefix: 0 for prefix in ID_PREFIX.values()}
     candidates: list[dict] = []
 
@@ -240,7 +268,15 @@ def extract_candidates(lines: list[str], sections: list[Section]) -> list[dict]:
                 "title": text[:90],
                 "statement": text,
                 "source_refs": [f"SRC-001#line-{line_no}"],
-                "section_ref": find_section(sections, line_no),
+                "priority": "unknown",
+                "owner": "",
+                "rationale": "",
+                "dependencies": [],
+                "module_ref": None,
+                "feature_ref": None,
+                "user_story_refs": [],
+                "use_case_refs": [],
+                "acceptance_criteria_refs": [],
                 "status": "draft",
             }
         )
@@ -275,6 +311,7 @@ def build_questions(candidates: list[dict], lines: list[str]) -> list[dict]:
                 "context": context,
                 "why_it_matters": "The answer affects requirement interpretation, design, estimation, or acceptance.",
                 "owner": "",
+                "suggested_options": [],
                 "blocks": blocks,
             }
         )
@@ -306,39 +343,75 @@ def compile_model(input_path: Path) -> dict:
     text = read_text(input_path)
     lines = text.splitlines()
     sections = extract_sections(lines)
-    candidates = extract_candidates(lines, sections)
+    candidates = extract_candidates(lines)
+
+    source_type = "markdown" if input_path.suffix.lower() in {".md", ".markdown"} else "text"
 
     return {
         "metadata": {
             "title": input_path.stem,
-            "version": "draft",
+            "version": "",
+            "date": "",
+            "authors": [],
+            "status": "draft",
+            "target_systems": [],
             "source_files": [str(input_path)],
+            "compilation_notes": [
+                "Automatically compiled first-pass model; human review is required."
+            ],
             "compiler": "semantic-spec-compilation/scripts/compile_spec.py",
             "review_required": True,
         },
         "sources": [
             {
                 "source_id": "SRC-001",
-                "type": "markdown_or_text",
+                "type": source_type,
                 "locator": str(input_path),
                 "reliability": "explicit",
             }
         ],
         "sections": [section.__dict__ for section in sections],
         "glossary": extract_glossary_candidates(lines),
+        "stakeholders": [],
+        "scope": {},
+        "actors": [],
+        "systems": [],
+        "modules": [],
+        "epics": [],
+        "features": [],
+        "user_stories": [],
+        "use_cases": [],
+        "processes": [],
+        "states": [],
+        "data_objects": [],
         "requirements": candidates,
+        "business_rules": [],
+        "integrations": [],
+        "interfaces": [],
+        "reports": [],
+        "security": [],
+        "acceptance_criteria": [],
+        "tests": [],
         "open_questions": build_questions(candidates, lines),
         "traceability": [
             {
-                "source_ref": source_ref,
-                "compiled_items": [item["id"]],
+                "source_refs": [source_ref],
+                "module_ref": None,
+                "epic_ref": None,
+                "feature_ref": None,
+                "user_story_ref": None,
+                "use_case_refs": [],
+                "requirement_refs": [item["id"]],
+                "business_rule_refs": [],
                 "artifacts": [],
-                "acceptance_criteria": [],
-                "tests": [],
+                "acceptance_criteria_refs": [],
+                "test_refs": [],
             }
             for item in candidates
             for source_ref in item["source_refs"]
         ],
+        "risks": [],
+        "assumptions": [],
     }
 
 
@@ -358,7 +431,9 @@ def main() -> int:
     if args.output:
         args.output.write_text(payload + "\n", encoding="utf-8")
     else:
-        print(payload)
+        if hasattr(sys.stdout, "reconfigure"):
+            sys.stdout.reconfigure(encoding="utf-8")
+        sys.stdout.write(payload + "\n")
 
     return 0
 

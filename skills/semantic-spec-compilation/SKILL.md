@@ -1,13 +1,13 @@
 ---
 name: semantic-spec-compilation
-description: Transform business and system analysis inputs into SDD, Spec-Driven Documentation, SSC, and Semantic Spec Compilation artifacts. Use when the user says "SSC", "SDD", "скомпилируй спецификацию", "сделай SDD", "сделай SSC", or asks to compile Markdown, Word, meeting notes, interview notes, task descriptions, Bitrix24 tasks, 1C ERP integration requirements, API/RabbitMQ/PostgreSQL/MariaDB/Vue/Python requirements, BPMN/UML/PlantUML descriptions, or ambiguous product ideas into canonical requirements models, clarification questions, traceability matrices, diagrams, API/database/integration contracts, implementation tasks, or acceptance criteria.
+description: Compile informal business and system analysis inputs into traceable, module-first SDD/SSC specifications organized by epics, features, user stories, use cases, requirements, acceptance criteria, business rules, traceability, open questions, and optional technical appendices. Use for SDD, SSC, Markdown or Word specifications, meeting notes, interviews, task descriptions, and 1C ERP/API/RabbitMQ/database/Vue/Python analysis.
 ---
 
 # Semantic Spec Compilation
 
 ## Overview
 
-Use this skill to turn informal or semi-formal analysis inputs into a structured specification package. Treat the specification as a source artifact that can be compiled into multiple downstream artifacts: canonical model, gaps, traceability, diagrams, contracts, test cases, and implementation tasks.
+Use this skill to turn informal or semi-formal analysis inputs into a structured specification package. Treat the specification as a source artifact that can be compiled into a canonical model, gaps, traceability, diagrams, contracts, and test cases.
 
 The skill is optimized for business and system analysis work around 1C ERP, Bitrix24, RabbitMQ, PostgreSQL, MariaDB, Vue, Python, StormBPMN, UML, and PlantUML.
 
@@ -20,23 +20,37 @@ Do not invent missing requirements. Separate extracted facts, explicit assumptio
 1. Identify source type: Markdown, Word/DOCX, PDF, screenshot, meeting transcript, task text, codebase, database schema, API contract, or mixed inputs.
 2. Preserve source meaning before restructuring. Keep source terms in a glossary when they may have domain meaning.
 3. Build the canonical model using `references/canonical-model.md`.
-4. Classify requirements as functional, non-functional, business rule, data, integration, UI, reporting, security, operational, or migration requirement.
-5. Detect ambiguity, contradiction, missing actors, missing triggers, missing data ownership, missing error behavior, and missing acceptance criteria.
-6. Compile downstream artifacts requested by the user. If the user does not specify artifacts, produce the default analyst package.
-7. Keep outputs traceable. Every generated requirement, task, test, diagram node, or contract element should point back to source text, assumption, or question.
+4. Organize functionality as `Module -> Epic -> Feature -> User Story`, then place the related use case, functional requirements, and acceptance criteria under each feature.
+5. Classify requirements as functional, non-functional, business rule, data, integration, UI, reporting, security, operational, or migration requirement.
+6. Detect ambiguity, contradiction, missing actors, missing triggers, missing data ownership, missing error behavior, and missing acceptance criteria.
+7. Render the primary document using `references/document-structure.md`. Compile optional downstream artifacts only when requested or applicable.
+8. Keep outputs traceable. Every generated requirement, test, diagram node, or contract element should point back to source text, assumption, or question.
 
 ## Default Analyst Package
 
 When the user asks broadly to process, compile, formalize, or prepare a specification, produce:
 
-- Executive summary: goal, scope, out of scope, stakeholders.
-- Canonical model: entities, actors, processes, states, events, integrations, constraints.
-- Requirements catalog with stable IDs.
+- Document passport.
+- Executive summary: context, problem, goal, and expected result.
+- Scope, out of scope, constraints, and external dependencies.
+- Sources, reliability, glossary, and abbreviations.
+- Stakeholders, actors, roles, external participants, and responsibilities.
+- Functional modules organized as `MOD -> EPIC -> FEAT -> US`.
+- Under each feature: user stories, use case or use cases, functional requirements, and acceptance criteria.
+- Module-level non-functional requirements after the module's features.
+- Business rules after the functional modules.
+- Requirements traceability matrix.
 - Open questions grouped by blocker severity.
-- Traceability matrix: source -> requirement -> artifact -> acceptance criteria/test.
-- BPMN/UML/PlantUML recommendations and diagram code when useful.
-- Integration contract outline for API, RabbitMQ, 1C ERP exchange, or database impact when applicable.
-- Implementation task breakdown suitable for Bitrix24.
+- Optional appendices only when applicable: diagrams, contracts, mappings, data models, and technical schemes.
+
+## Document Rendering Rules
+
+- Follow the section order and field definitions in `references/document-structure.md` unless the user explicitly requests another structure.
+- Do not display INVEST or another internal quality score in the compiled document unless the user explicitly asks for it.
+- In a User Story card, do not repeat the parent feature, related use case, requirement IDs, or acceptance criteria IDs. The sequential document structure and final traceability matrix carry those relationships.
+- Keep relationship references in the canonical model even when they are hidden from the rendered User Story card.
+- Do not force a one-to-one relationship between User Story and Use Case. A use case may cover several stories, and a story may contribute to more than one use case.
+- State missing values as gaps and create open questions. Do not fill them with invented roles, rules, thresholds, sources, or system behavior.
 
 ## Compilation Pipeline
 
@@ -45,6 +59,8 @@ When the user asks broadly to process, compile, formalize, or prepare a specific
 Convert the input into normalized sections:
 
 - Context and goal.
+- Modules, epics, features, and user stories.
+- Use cases.
 - Business process.
 - Actors and roles.
 - Systems and external participants.
@@ -69,6 +85,11 @@ Use the script as a first pass only. Review the output analytically before using
 
 Create stable IDs:
 
+- `MOD-###` for functional modules.
+- `EPIC-###` for epics.
+- `FEAT-###` for features.
+- `US-###` for user stories.
+- `UC-###` for use cases.
 - `BR-###` for business rules.
 - `FR-###` for functional requirements.
 - `NFR-###` for non-functional requirements.
@@ -78,15 +99,22 @@ Create stable IDs:
 - `MSG-###` for RabbitMQ messages/events.
 - `UI-###` for interface requirements.
 - `REP-###` for reports.
+- `SEC-###` for security requirements.
+- `MIG-###` for migration requirements.
+- `OPS-###` for operational requirements.
 - `AC-###` for acceptance criteria.
 - `Q-###` for open questions.
 
-For each item capture: title, statement, source, rationale, priority, owner, dependencies, acceptance criteria, and status.
+Capture the fields required for each item by `references/canonical-model.md`. Maintain source references, status, and relationships even when the rendered document intentionally omits redundant links.
 
 ### 3. Validate
 
 Check the model against these quality gates:
 
+- Each feature belongs to one epic, each epic belongs to one module, and each user story is placed under a feature.
+- Each user story states an actor or beneficiary, need, and value, unless a different approved story format preserves the same meaning.
+- Each feature is followed by its related use case or use cases, functional requirements, and testable acceptance criteria.
+- Module-level non-functional requirements appear after all features of that module; cross-system NFRs are stated once at the broadest applicable scope.
 - Each process has a trigger, actor, happy path, alternative path, and completion condition.
 - Each integration has producer, consumer, transport, payload, idempotency, retry, error handling, and monitoring behavior.
 - Each data object has owner system, identifiers, lifecycle, required fields, validation rules, and retention/audit expectations.
@@ -101,14 +129,13 @@ Choose artifacts based on the user's goal:
 
 - For business process analysis: BPMN outline and StormBPMN-ready process structure.
 - For system design: UML use case, activity, sequence, component, deployment, or state diagrams.
-- For implementation planning: Bitrix24 task tree with acceptance criteria and dependencies.
 - For integration work: API contract, RabbitMQ event catalog, sequence diagrams, mapping tables.
 - For database work: ERD, table changes, constraints, indexes, migration notes.
 - For frontend work: Vue screen inventory, states, validations, user flows.
 - For backend work: Python service responsibilities, endpoints, jobs, error handling, logging.
 - For documentation delivery: Markdown or Word-ready structure following local document formatting requirements.
 
-Use `references/artifact-templates.md` for output shapes and `references/stack-patterns.md` for stack-specific checks.
+Use `references/document-structure.md` for the primary document, `references/artifact-templates.md` for optional artifact shapes, and `references/stack-patterns.md` for stack-specific checks.
 
 ## Handling Word Output
 
@@ -116,6 +143,6 @@ When creating a Word document, follow the user's local document rules if present
 
 ## Response Style
 
-Be explicit about uncertainty. Use tables for catalogs, matrices, mappings, and task breakdowns. Use PlantUML code blocks for diagrams when requested or when diagrams materially clarify the spec.
+Be explicit about uncertainty. Use tables for catalogs, matrices, and mappings. Use PlantUML code blocks for diagrams when requested or when diagrams materially clarify the spec.
 
 Prefer concise artifacts that can be reviewed by stakeholders. For unresolved areas, give questions with enough context for a product owner, architect, developer, or 1C consultant to answer.

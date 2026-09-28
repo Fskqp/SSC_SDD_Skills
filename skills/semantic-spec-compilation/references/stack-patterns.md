@@ -29,7 +29,6 @@ Check:
 - Automation rules and triggers.
 - Status/stage transitions and permissions.
 - Integration with 1C ERP or external backend.
-- Task decomposition with acceptance criteria and responsible roles.
 
 Questions:
 

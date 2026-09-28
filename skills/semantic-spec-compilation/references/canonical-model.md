@@ -8,11 +8,17 @@ Use this reference when compiling informal requirements into a semantic model. K
 {
   "metadata": {},
   "sources": [],
+  "sections": [],
   "glossary": [],
   "stakeholders": [],
   "scope": {},
   "actors": [],
   "systems": [],
+  "modules": [],
+  "epics": [],
+  "features": [],
+  "user_stories": [],
+  "use_cases": [],
   "processes": [],
   "states": [],
   "data_objects": [],
@@ -33,7 +39,9 @@ Use this reference when compiling informal requirements into a semantic model. K
 
 ## Metadata
 
-Capture:
+The compiler emits every field below. `title`, `status`, `source_files`, `compiler`, and `review_required` must be populated. Keep unknown source metadata as an empty string or empty list instead of inventing values.
+
+Fields:
 
 - `title`
 - `version`
@@ -43,21 +51,123 @@ Capture:
 - `target_systems`
 - `source_files`
 - `compilation_notes`
+- `compiler`
+- `review_required`
 
 ## Source Records
 
 Each source record should include:
 
 - `source_id`: stable identifier, for example `SRC-001`.
-- `type`: `markdown`, `docx`, `pdf`, `meeting`, `task`, `screenshot`, `database`, `api`, `code`, or `unknown`.
+- `type`: `markdown`, `text`, `docx`, `pdf`, `meeting`, `task`, `screenshot`, `database`, `api`, `code`, or `unknown`.
 - `locator`: file name, URL, task ID, meeting name, or quoted source fragment.
 - `reliability`: `explicit`, `inferred`, `assumed`, or `conflicting`.
 
+## Source Sections
+
+The first-pass compiler preserves the source document structure in `sections`. Each section record should include:
+
+- `id`: `SECTION-###`.
+- `title`.
+- `level`: source heading level.
+- `start_line`: first source line of the section.
+- `end_line`: last source line of the section, or `null` when it cannot be determined.
+
+## Functional Hierarchy
+
+The rendered hierarchy is `Module -> Epic -> Feature -> User Story`. Keep explicit references in the canonical model for traceability even though the rendered User Story card omits redundant relationship fields.
+
+### Modules
+
+Each module should include:
+
+- `id`: `MOD-###`
+- `name`
+- `goal`
+- `primary_actor_ref`
+- `status`
+- `priority`
+- `scope`
+- `out_of_scope`
+- `owner`
+- `source_system`
+- `epic_refs`
+- `source_refs`
+
+### Epics
+
+Each epic should include:
+
+- `id`: `EPIC-###`
+- `name`
+- `module_ref`
+- `goal`
+- `feature_refs`
+- `source_refs`
+
+### Features
+
+Each feature should include:
+
+- `id`: `FEAT-###`
+- `name`
+- `epic_ref`
+- `goal`
+- `user_story_refs`
+- `use_case_refs`
+- `functional_requirement_refs`
+- `acceptance_criteria_refs`
+- `source_refs`
+
+### User Stories
+
+Each user story should include:
+
+- `id`: `US-###`
+- `title`
+- `statement`
+- `actor_or_beneficiary`
+- `need`
+- `value`
+- `priority`
+- `dependencies`
+- `status`
+- `feature_ref`
+- `use_case_refs`
+- `requirement_refs`
+- `acceptance_criteria_refs`
+- `source_refs`
+
+The `feature_ref`, `use_case_refs`, `requirement_refs`, and `acceptance_criteria_refs` fields support the canonical model and traceability. Do not repeat them in the human-readable User Story card.
+
+### Use Cases
+
+Each use case should include:
+
+- `id`: `UC-###`
+- `name`
+- `primary_actor_ref`
+- `goal`
+- `trigger`
+- `preconditions`
+- `main_flow`
+- `alternative_flows`
+- `exceptions`
+- `postconditions`
+- `data_used`
+- `systems_involved`
+- `feature_refs`
+- `user_story_refs`
+- `requirement_refs`
+- `source_refs`
+
 ## Requirements
 
-Each requirement should include:
+Every requirement record must include all fields below. `id`, `type`, `title`, `statement`, `source_refs`, `priority`, and `status` must be populated. Use empty strings, empty arrays, or `null` for unresolved enrichment and relationship fields; do not omit them and do not invent values.
 
-- `id`
+Fields:
+
+- `id`: use `FR`, `NFR`, `DATA`, `INT`, `UI`, `REP`, `SEC`, `MIG`, or `OPS` according to the requirement type.
 - `type`: `functional`, `non_functional`, `data`, `integration`, `ui`, `report`, `security`, `migration`, `operational`.
 - `title`
 - `statement`
@@ -66,6 +176,10 @@ Each requirement should include:
 - `owner`
 - `rationale`
 - `dependencies`
+- `module_ref`
+- `feature_ref`
+- `user_story_refs`
+- `use_case_refs`
 - `acceptance_criteria_refs`
 - `status`: `draft`, `confirmed`, `questioned`, `conflict`, `deprecated`.
 
@@ -82,6 +196,7 @@ Fields:
 - `exception`
 - `examples`
 - `source_refs`
+- `scope_refs`
 - `owner`
 - `status`
 
@@ -147,7 +262,9 @@ Each integration should include:
 Each acceptance criterion should be testable:
 
 - `id`
-- `requirement_ref`
+- `feature_ref`
+- `user_story_refs`
+- `requirement_refs`
 - `given`
 - `when`
 - `then`
@@ -161,11 +278,17 @@ Traceability links source fragments to requirements and generated artifacts:
 
 ```json
 {
-  "source_ref": "SRC-001#section-3",
-  "compiled_items": ["FR-001", "BR-003"],
+  "source_refs": ["SRC-001#section-3"],
+  "module_ref": "MOD-001",
+  "epic_ref": "EPIC-001",
+  "feature_ref": "FEAT-001",
+  "user_story_ref": "US-001",
+  "use_case_refs": ["UC-001"],
+  "requirement_refs": ["FR-001", "NFR-001"],
+  "business_rule_refs": ["BR-003"],
   "artifacts": ["BPMN-001", "API-002"],
-  "acceptance_criteria": ["AC-001", "AC-002"],
-  "tests": ["T-001"]
+  "acceptance_criteria_refs": ["AC-001", "AC-002"],
+  "test_refs": ["T-001"]
 }
 ```
 
@@ -180,6 +303,7 @@ Use blocker levels:
 Each question should include:
 
 - `id`
+- `level`: `blocker`, `major`, or `minor`.
 - `question`
 - `context`
 - `why_it_matters`

@@ -1,6 +1,6 @@
 # Artifact Templates
 
-Use these templates when emitting reviewable analyst artifacts from the canonical model.
+Use these templates for optional analyst artifacts and appendices. Use `document-structure.md` for the primary human-readable SDD/SSC document.
 
 ## Requirements Catalog
 
@@ -10,29 +10,17 @@ Use these templates when emitting reviewable analyst artifacts from the canonica
 
 ## Open Questions
 
-| ID | Level | Question | Context | Why It Matters | Owner | Blocks |
-| --- | --- | --- | --- | --- | --- | --- |
-| Q-001 | blocker |  |  |  |  | FR-001 |
+| ID | Level | Question | What It Blocks |
+| --- | --- | --- | --- |
+| Q-001 | blocker |  | FR-001 |
 
 ## Traceability Matrix
 
-| Source | Extracted Fact | Requirement | Artifact | Acceptance/Test |
+| User Story | Use Case | Requirements | Business Rules | Acceptance Criteria |
 | --- | --- | --- | --- | --- |
-| SRC-001#p1 |  | FR-001 | BPMN-001 | AC-001 |
+| US-001 | UC-001 | FR-001, NFR-001 | BR-001 | AC-001 |
 
-## Bitrix24 Task Tree
-
-Use this shape for implementation planning:
-
-| Task | Type | Description | Depends On | Acceptance Criteria | Assignee Role |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Epic |  |  |  | Analyst |
-| 1.1 | Backend |  | 1 | AC-001 | Python developer |
-| 1.2 | Frontend |  | 1 | AC-002 | Vue developer |
-| 1.3 | 1C ERP |  | 1 | AC-003 | 1C consultant |
-| 1.4 | QA |  | 1.1, 1.2, 1.3 | AC-001..AC-003 | QA |
-
-Each task should have an unambiguous outcome, dependencies, artifacts, and acceptance criteria. Avoid tasks named only "analyze", "develop", or "configure" without a concrete deliverable.
+Do not add a `Source` column by default. Add `Module` and `Feature` columns for multi-module documents only when needed to remove ambiguity. Keep source-level links in the canonical model unless the user explicitly requests them in the rendered matrix.
 
 ## BPMN Outline
 
