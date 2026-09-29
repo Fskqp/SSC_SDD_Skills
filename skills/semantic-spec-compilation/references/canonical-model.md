@@ -133,19 +133,24 @@ Each user story should include:
 - `dependencies`
 - `status`
 - `feature_ref`
-- `use_case_refs`
+- `primary_use_case_ref`
+- `additional_use_case_links`: records containing `use_case_ref` and `rationale`.
+- `use_case_refs`: derived union of the primary reference and all additional references.
 - `requirement_refs`
 - `acceptance_criteria_refs`
 - `source_refs`
 
-The `feature_ref`, `use_case_refs`, `requirement_refs`, and `acceptance_criteria_refs` fields support the canonical model and traceability. Do not repeat them in the human-readable User Story card.
+Every User Story has exactly one `primary_use_case_ref` by default, and that reference points to a concrete Use Case. Additional links are optional and require a non-empty rationale. The derived `use_case_refs` field supports compatibility and must not be used to hide which link is primary. Do not repeat these relationship fields in the human-readable User Story card.
 
 ### Use Cases
 
 Each use case should include:
 
-- `id`: `UC-###`
+- `id`: `UC-##` for a parent or umbrella use case, `UC-##.##` for its concrete child, or `UC-###` for a standalone concrete use case.
 - `name`
+- `scope_type`: `concrete` or `umbrella`.
+- `parent_use_case_ref`: the umbrella Use Case for a concrete child, otherwise `null`.
+- `child_use_case_refs`: direct concrete children for an umbrella Use Case, otherwise an empty list.
 - `primary_actor_ref`
 - `goal`
 - `trigger`
@@ -157,11 +162,14 @@ Each use case should include:
 - `data_used`
 - `systems_involved`
 - `feature_refs`
-- `user_story_refs`
+- `user_story_ref`: the primary linked User Story for a concrete Use Case, otherwise `null`.
+- `related_user_story_refs`: non-primary links, when explicitly justified.
 - `requirement_refs`
 - `source_refs`
 
-Represent `main_flow` as an ordered array of row records:
+A concrete Use Case must have a `user_story_ref`, bounded goal, trigger, main flow, alternatives when applicable, and observable postconditions. By default, one concrete Use Case is primary for one User Story. An umbrella Use Case cannot be referenced by `primary_use_case_ref`; use it only for orchestration, decomposition, or diagrams. Do not duplicate all child scenarios in the umbrella Use Case.
+
+Represent the concrete Use Case `main_flow` as an ordered array of row records:
 
 - `step_id`: a unique sequential integer used by the rendered two-column table.
 - `actor_action`: actor action for the row, or `null` for a system-only step.
@@ -179,6 +187,8 @@ Represent `alternative_flows` as an ordered array of branch records:
 - `return_to_step_id`: an existing `main_flow.step_id` when `outcome` is `return`; otherwise `null`.
 
 The branch ID, `branches_from_step_id`, and every child-step ID must agree. Every alternative flow must have an explicit outcome. Store distinct exception records only when the user requests a separate exception catalog; otherwise represent errors as numbered alternative flows.
+
+Validate the relationship in both directions: `user_stories[].primary_use_case_ref` points to a `scope_type: concrete` record, and that record's `user_story_ref` points back to the same User Story. If hierarchical numbering is used, the concrete ID prefix and `parent_use_case_ref` must agree.
 
 ## Requirements
 
@@ -302,7 +312,13 @@ Traceability links source fragments to requirements and generated artifacts:
   "epic_ref": "EPIC-001",
   "feature_ref": "FEAT-001",
   "user_story_ref": "US-001",
-  "use_case_refs": ["UC-001"],
+  "primary_use_case_ref": "UC-01.01",
+  "additional_use_case_links": [
+    {
+      "use_case_ref": "UC-03.02",
+      "rationale": "The story also invokes a distinct audit scenario"
+    }
+  ],
   "requirement_refs": ["FR-001", "NFR-001"],
   "business_rule_refs": ["BR-003"],
   "artifacts": ["BPMN-001", "API-002"],
@@ -310,6 +326,8 @@ Traceability links source fragments to requirements and generated artifacts:
   "test_refs": ["T-001"]
 }
 ```
+
+Render the primary reference as `Link Type: Primary`. Render each additional link as a separate `Link Type: Additional` row and carry its rationale into the traceability matrix. Never render an umbrella Use Case as the primary link.
 
 ## Open Questions
 

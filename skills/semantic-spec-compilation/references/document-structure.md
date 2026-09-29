@@ -100,21 +100,27 @@ MOD-001 Module
 └── EPIC-001 Epic
     ├── FEAT-001 Feature
     │   ├── US-001 User Story
+    │   │   └── UC-01.01 Primary concrete Use Case
     │   └── US-002 User Story
+    │       └── UC-01.02 Primary concrete Use Case
     └── FEAT-002 Feature
         └── US-003 User Story
+            └── UC-02.01 Primary concrete Use Case
 ```
 
 The hierarchy is `Module -> Epic -> Feature -> User Story`. Do not use `User Task` for implementation work in this hierarchy.
+
+A parent or umbrella Use Case may group concrete Use Cases in a decomposition table or diagram. It is not a substitute for the concrete Use Case placed under each User Story.
 
 ### Epic And Feature Content
 
 For each epic, render its features sequentially. Use this order inside every feature:
 
-1. User Stories
-2. Related Use Case or Use Cases
-3. Functional Requirements
-4. Acceptance Criteria
+1. Repeat a `User Story -> primary concrete Use Case` pair for every story.
+2. Functional Requirements.
+3. Acceptance Criteria.
+
+Within each repeated pair, render the User Story first. Immediately after it, add the marker `Related Use Case for US-###` and the full card of its primary concrete Use Case. If the story has an additional use case link, place it after the primary card and state why the extra link is needed before continuing to the next User Story.
 
 #### User Story
 
@@ -133,17 +139,21 @@ Do not display these redundant fields in the User Story card:
 - Acceptance criteria IDs
 - INVEST score or checklist
 
-Keep those relationships in the canonical model and expose them in the traceability matrix.
+Keep those relationships in the canonical model, expose the primary relationship through the adjacent Use Case card, and repeat it in the traceability matrix.
 
 #### Use Case
 
-Use the following mandatory shape for every use case. Do not replace it with prose, a numbered list, bullets, or a one-column table.
+Every User Story has exactly one primary concrete Use Case by default. Place it immediately after the story using this mandatory shape. Do not replace it with prose, a numbered list, bullets, or a one-column table.
 
 ```markdown
-**UC-###. <Title>**
+**Related Use Case for US-###**
+
+**UC-##.##. <Concrete goal>**
 
 | Field | Value |
 |---|---|
+| User Story | US-### |
+| Parent Use Case | UC-##, when applicable |
 | Primary actor |  |
 | Goal |  |
 | Trigger |  |
@@ -172,6 +182,10 @@ Use the following mandatory shape for every use case. Do not replace it with pro
 
 Apply these rules exactly:
 
+- The primary Use Case describes one concrete user goal represented by the preceding User Story. It links to that story in the canonical model.
+- When a parent Use Case is used, identify it as `UC-##` and identify concrete children as `UC-##.##`. When no parent exists, use `UC-###` for the standalone concrete Use Case.
+- A parent or umbrella Use Case is an orchestration, decomposition, or diagram element. It cannot be the primary Use Case of a User Story and does not replace a concrete scenario card.
+- A story may have additional use case links only when they represent distinct behavior. Mark each additional link and give a concise rationale.
 - The main-scenario table has exactly two columns: `Actor action` and `System response`.
 - Each row represents one logical step and has one unique sequential integer identifier.
 - When both cells in a row are populated, repeat the same step identifier in both cells. Do not number the actor action and system response as separate steps.
@@ -181,7 +195,7 @@ Apply these rules exactly:
 - End every alternative with either an explicit return to a numbered main-scenario step or an explicit completion outcome. Do not use an implicit continuation.
 - Keep exceptions and errors in the same numbered alternative-scenario format unless the user explicitly requests a separate exception catalog.
 - Include data used and participating systems in the field card only when they materially clarify the scenario.
-- Do not create one use case per story mechanically. Group stories under one use case when they represent parts of the same end-to-end interaction.
+- Keep shared end-to-end orchestration in the parent Use Case or diagram instead of merging the concrete Use Cases attached to different stories.
 
 #### Functional Requirements
 
@@ -240,11 +254,11 @@ If a rule applies only to one module or feature, preserve that scope in the cano
 
 Use this compact matrix:
 
-| User Story | Use Case | Requirements | Business Rules | Acceptance Criteria |
-|---|---|---|---|---|
-| US-001 | UC-001 | FR-001, NFR-001 | BR-001 | AC-001 |
+| User Story | Use Case | Link Type | Link Rationale | Requirements | Business Rules | Acceptance Criteria |
+|---|---|---|---|---|---|---|
+| US-001 | UC-01.01 | Primary | Concrete scenario for the story goal | FR-001, NFR-001 | BR-001 | AC-001 |
 
-Use these columns in the primary document. Do not add a `Source` column by default. For a multi-module document, add `Module` and `Feature` columns only when needed to remove ambiguity. Maintain source-level traceability in the canonical model and add it to the rendered matrix only when the user explicitly requests source traceability.
+Use these columns in the primary document. Every User Story has exactly one `Primary` row with a concrete Use Case. Add rows of type `Additional` only with a meaningful rationale. A parent or umbrella Use Case cannot be used in a `Primary` row. Do not add a `Source` column by default. For a multi-module document, add `Module` and `Feature` columns only when needed to remove ambiguity. Maintain source-level traceability in the canonical model and add it to the rendered matrix only when the user explicitly requests source traceability.
 
 ## 9. Open Questions
 

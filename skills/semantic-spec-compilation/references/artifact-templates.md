@@ -16,11 +16,11 @@ Use these templates for optional analyst artifacts and appendices. Use `document
 
 ## Traceability Matrix
 
-| User Story | Use Case | Requirements | Business Rules | Acceptance Criteria |
-| --- | --- | --- | --- | --- |
-| US-001 | UC-001 | FR-001, NFR-001 | BR-001 | AC-001 |
+| User Story | Use Case | Link Type | Link Rationale | Requirements | Business Rules | Acceptance Criteria |
+| --- | --- | --- | --- | --- | --- | --- |
+| US-001 | UC-01.01 | Primary | Concrete scenario for the story goal | FR-001, NFR-001 | BR-001 | AC-001 |
 
-Do not add a `Source` column by default. Add `Module` and `Feature` columns for multi-module documents only when needed to remove ambiguity. Keep source-level links in the canonical model unless the user explicitly requests them in the rendered matrix.
+Every User Story has exactly one `Primary` row with a concrete Use Case. Put every justified extra relation in a separate `Additional` row and state its rationale. Never use a parent or umbrella Use Case in a `Primary` row. Do not add a `Source` column by default. Add `Module` and `Feature` columns for multi-module documents only when needed to remove ambiguity. Keep source-level links in the canonical model unless the user explicitly requests them in the rendered matrix.
 
 ## BPMN Outline
 
@@ -46,11 +46,15 @@ Quality checks:
 left to right direction
 actor "User" as User
 rectangle "Target System" {
-  usecase "UC-001: Capability" as UC001
+  usecase "UC-01\nParent capability" as UC01
+  usecase "UC-01.01\nConcrete story goal" as UC0101
 }
-User --> UC001
+User --> UC0101
+UC01 ..> UC0101 : <<include>>
 @enduml
 ```
+
+Use a diagram to show orchestration and relations, not to replace the concrete Use Case card placed immediately after its User Story. A parent Use Case may organize child scenarios but cannot serve as the story's primary Use Case.
 
 ## PlantUML Sequence
 

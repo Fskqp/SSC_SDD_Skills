@@ -20,7 +20,7 @@ Do not invent missing requirements. Separate extracted facts, explicit assumptio
 1. Identify source type: Markdown, Word/DOCX, PDF, screenshot, meeting transcript, task text, codebase, database schema, API contract, or mixed inputs.
 2. Preserve source meaning before restructuring. Keep source terms in a glossary when they may have domain meaning.
 3. Build the canonical model using `references/canonical-model.md`.
-4. Organize functionality as `Module -> Epic -> Feature -> User Story`, then place the related use case, functional requirements, and acceptance criteria under each feature.
+4. Organize functionality as `Module -> Epic -> Feature -> User Story`. Immediately after each User Story, place its primary concrete Use Case. After all `User Story -> Use Case` pairs in the feature, place functional requirements and acceptance criteria.
 5. Classify requirements as functional, non-functional, business rule, data, integration, UI, reporting, security, operational, or migration requirement.
 6. Detect ambiguity, contradiction, missing actors, missing triggers, missing data ownership, missing error behavior, and missing acceptance criteria.
 7. Render the primary document using `references/document-structure.md`. Compile optional downstream artifacts only when requested or applicable.
@@ -36,7 +36,7 @@ When the user asks broadly to process, compile, formalize, or prepare a specific
 - Sources, reliability, glossary, and abbreviations.
 - Stakeholders, actors, roles, external participants, and responsibilities.
 - Functional modules organized as `MOD -> EPIC -> FEAT -> US`.
-- Under each feature: user stories, use case or use cases, functional requirements, and acceptance criteria.
+- Under each feature: repeat `User Story -> primary concrete Use Case`, then add feature-scoped functional requirements and acceptance criteria.
 - Module-level non-functional requirements after the module's features.
 - Business rules after the functional modules.
 - Requirements traceability matrix.
@@ -46,13 +46,14 @@ When the user asks broadly to process, compile, formalize, or prepare a specific
 ## Document Rendering Rules
 
 - Use `references/document-structure.md` as the required concrete template for the primary SDD/SSC document. Follow its top-level section order, required fields, module hierarchy, and table columns. Use optional sections only where the template allows them or the user explicitly requests another structure.
-- Within every feature, use exactly four ordered blocks: User Stories, related Use Cases, Functional Requirements, Acceptance Criteria. Place typed UI, data, integration, security, and operational requirements inside the Functional Requirements block.
-- Render every use case in the mandatory shape defined by `references/document-structure.md`: a `Field | Value` card, a two-column `Actor action | System response` main-scenario table, and step-bound alternative scenarios such as `2а` with child steps `2а1`, `2а2`. Do not replace this shape with prose, bullets, or a single-column step list.
+- Within every feature, repeat an ordered pair for each story: User Story followed immediately by its primary concrete Use Case. After the last pair, place Functional Requirements and Acceptance Criteria. Place typed UI, data, integration, security, and operational requirements inside the Functional Requirements block.
+- Render every concrete use case in the mandatory shape defined by `references/document-structure.md`: a `Field | Value` card, a two-column `Actor action | System response` main-scenario table, and step-bound alternative scenarios such as `2а` with child steps `2а1`, `2а2`. Do not replace this shape with prose, bullets, or a single-column step list.
 - Do not create separate sections or columns for compilation metadata. Put source maturity under source reliability, overall status in the passport, and unresolved decisions in open questions. Before delivery, compare the heading hierarchy and table columns with the template.
 - Do not display INVEST or another internal quality score in the compiled document unless the user explicitly asks for it.
 - In a User Story card, do not repeat the parent feature, related use case, requirement IDs, or acceptance criteria IDs. The sequential document structure and final traceability matrix carry those relationships.
 - Keep relationship references in the canonical model even when they are hidden from the rendered User Story card.
-- Do not force a one-to-one relationship between User Story and Use Case. A use case may cover several stories, and a story may contribute to more than one use case.
+- By default, assign exactly one primary concrete Use Case to each User Story and place it immediately after that story. Additional use case links are allowed only when they add distinct behavior and include an explicit rationale.
+- A parent or umbrella Use Case may organize an end-to-end capability in a diagram or decomposition, but it cannot be the primary Use Case of a User Story and cannot replace the story's concrete scenario.
 - State missing values as gaps and create open questions. Do not fill them with invented roles, rules, thresholds, sources, or system behavior.
 
 ## Compilation Pipeline
@@ -92,7 +93,7 @@ Create stable IDs:
 - `EPIC-###` for epics.
 - `FEAT-###` for features.
 - `US-###` for user stories.
-- `UC-###` for use cases.
+- `UC-##` for a parent or umbrella use case and `UC-##.##` for its concrete child use cases. Use `UC-###` for a standalone use case when no parent use case exists.
 - `BR-###` for business rules.
 - `FR-###` for functional requirements.
 - `NFR-###` for non-functional requirements.
@@ -116,8 +117,10 @@ Check the model against these quality gates:
 
 - Each feature belongs to one epic, each epic belongs to one module, and each user story is placed under a feature.
 - Each user story states an actor or beneficiary, need, and value, unless a different approved story format preserves the same meaning.
-- Each feature is followed by its related use case or use cases, functional requirements, and testable acceptance criteria.
+- Each User Story is followed immediately by exactly one primary concrete Use Case. Additional use case links include a rationale; parent or umbrella Use Cases do not satisfy this rule.
+- After all `User Story -> Use Case` pairs, each feature contains functional requirements and testable acceptance criteria.
 - Each use-case main-scenario step has one unique row identifier. Every alternative references an existing main-scenario step, uses the required branch numbering, and ends with an explicit return to a named main-scenario step or an explicit completion outcome.
+- Each primary concrete Use Case links back to its User Story in the canonical model, and the traceability matrix exposes the primary link explicitly. A diagram does not replace this relationship.
 - Module-level non-functional requirements appear after all features of that module; cross-system NFRs are stated once at the broadest applicable scope.
 - Each process has a trigger, actor, happy path, alternative path, and completion condition.
 - Each integration has producer, consumer, transport, payload, idempotency, retry, error handling, and monitoring behavior.
