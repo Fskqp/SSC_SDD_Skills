@@ -35,7 +35,7 @@ When the user asks broadly to process, compile, formalize, or prepare a specific
 - Scope, out of scope, constraints, and external dependencies.
 - Sources, reliability, glossary, and abbreviations.
 - Stakeholders, actors, roles, external participants, and responsibilities.
-- Functional modules organized as `MOD -> EPIC -> FEAT -> US`.
+- Functional modules organized as `MOD -> EPIC -> FEAT -> US`. Before the details of each module, render its complete hierarchy as a fenced `text` tree with Unicode branch characters (`│`, `├──`, `└──`). Show every epic, feature, and user story at its actual level; allow multiple children at each level and do not compress relationships into arrow notation.
 - Under each feature: repeat `User Story -> primary concrete Use Case`, then add feature-scoped functional requirements and acceptance criteria.
 - Module-level non-functional requirements after the module's features.
 - Business rules after the functional modules.
@@ -46,6 +46,7 @@ When the user asks broadly to process, compile, formalize, or prepare a specific
 ## Document Rendering Rules
 
 - Use `references/document-structure.md` as the required concrete template for the primary SDD/SSC document. Follow its top-level section order, required fields, module hierarchy, and table columns. Use optional sections only where the template allows them or the user explicitly requests another structure.
+- Follow the module tree example in `references/document-structure.md`: preserve vertical continuation lines and use `└──` only for the last child of a parent. The tree ends at User Stories; place their concrete Use Cases immediately after the stories in the detailed feature content.
 - Within every feature, repeat an ordered pair for each story: User Story followed immediately by its primary concrete Use Case. After the last pair, place Functional Requirements and Acceptance Criteria. Place typed UI, data, integration, security, and operational requirements inside the Functional Requirements block.
 - Render every concrete use case in the mandatory shape defined by `references/document-structure.md`: a `Field | Value` card, a two-column `Actor action | System response` main-scenario table, and step-bound alternative scenarios such as `2а` with child steps `2а1`, `2а2`. Do not replace this shape with prose, bullets, or a single-column step list.
 - Do not create separate sections or columns for compilation metadata. Put source maturity under source reliability, overall status in the passport, and unresolved decisions in open questions. Before delivery, compare the heading hierarchy and table columns with the template.
@@ -116,6 +117,7 @@ Capture the fields required for each item by `references/canonical-model.md`. Ma
 Check the model against these quality gates:
 
 - Each feature belongs to one epic, each epic belongs to one module, and each user story is placed under a feature.
+- Each module's visual tree lists all its epics, their features, and their user stories with correct `│`/`├──`/`└──` branches. Do not force one epic per module, one feature per epic, or one story per feature.
 - Each user story states an actor or beneficiary, need, and value, unless a different approved story format preserves the same meaning.
 - Each User Story is followed immediately by exactly one primary concrete Use Case. Additional use case links include a rationale; parent or umbrella Use Cases do not satisfy this rule.
 - After all `User Story -> Use Case` pairs, each feature contains functional requirements and testable acceptance criteria.

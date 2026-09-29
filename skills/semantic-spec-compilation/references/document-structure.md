@@ -93,22 +93,25 @@ Use `MOD-###. <Module name>`.
 
 ### Module Structure
 
-Show the hierarchy before detailed content:
+Show the complete hierarchy of each module before its detailed content as a fenced `text` tree. Use the box-drawing characters `│`, `├──`, and `└──` for visible parent-child relationships. Keep `│` in the indentation wherever a sibling follows; use `└──` only for the last child at that level. Do not replace branches with plain indentation, bullets, or inline arrows. The number of epics, features, and stories follows the actual specification, not the example below:
 
 ```text
 MOD-001 Module
-└── EPIC-001 Epic
-    ├── FEAT-001 Feature
-    │   ├── US-001 User Story
-    │   │   └── UC-01.01 Primary concrete Use Case
-    │   └── US-002 User Story
-    │       └── UC-01.02 Primary concrete Use Case
-    └── FEAT-002 Feature
-        └── US-003 User Story
-            └── UC-02.01 Primary concrete Use Case
+├── EPIC-001 First epic
+│   ├── FEAT-001 First feature
+│   │   └── US-001 First story
+│   └── FEAT-002 Second feature
+│       ├── US-002 Second story
+│       └── US-003 Third story
+└── EPIC-002 Second epic
+    ├── FEAT-003 Third feature
+    │   └── US-004 Fourth story
+    └── FEAT-004 Fourth feature
+        ├── US-005 Fifth story
+        └── US-006 Sixth story
 ```
 
-The hierarchy is `Module -> Epic -> Feature -> User Story`. Do not use `User Task` for implementation work in this hierarchy.
+The visual hierarchy ends at `Module -> Epic -> Feature -> User Story`. Do not force a one-to-one relationship at any level. Do not use `User Task` for implementation work in this hierarchy. Concrete Use Cases are documented immediately after their respective stories in the detailed feature content, not as a fifth level of this tree.
 
 A parent or umbrella Use Case may group concrete Use Cases in a decomposition table or diagram. It is not a substitute for the concrete Use Case placed under each User Story.
 
