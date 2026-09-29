@@ -45,7 +45,9 @@ When the user asks broadly to process, compile, formalize, or prepare a specific
 
 ## Document Rendering Rules
 
-- Follow the section order and field definitions in `references/document-structure.md` unless the user explicitly requests another structure.
+- Use `references/document-structure.md` as the required concrete template for the primary SDD/SSC document. Follow its top-level section order, required fields, module hierarchy, and table columns. Use optional sections only where the template allows them or the user explicitly requests another structure.
+- Within every feature, use exactly four ordered blocks: User Stories, related Use Cases, Functional Requirements, Acceptance Criteria. Place typed UI, data, integration, security, and operational requirements inside the Functional Requirements block.
+- Do not create separate sections or columns for compilation metadata. Put source maturity under source reliability, overall status in the passport, and unresolved decisions in open questions. Before delivery, compare the heading hierarchy and table columns with the template.
 - Do not display INVEST or another internal quality score in the compiled document unless the user explicitly asks for it.
 - In a User Story card, do not repeat the parent feature, related use case, requirement IDs, or acceptance criteria IDs. The sequential document structure and final traceability matrix carry those relationships.
 - Keep relationship references in the canonical model even when they are hidden from the rendered User Story card.

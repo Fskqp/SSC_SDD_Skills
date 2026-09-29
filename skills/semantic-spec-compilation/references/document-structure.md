@@ -181,6 +181,7 @@ After all epics and features of the module, add:
 | NFR-001 |  |
 
 Use measurable thresholds. Do not duplicate a cross-system NFR in every module or use case.
+When the source contains no confirmed measurable NFR, keep the module subsection with a brief gap statement and references to open questions. Do not invent an NFR or add a placeholder table row.
 
 ### Cross-System Non-Functional Requirements
 
