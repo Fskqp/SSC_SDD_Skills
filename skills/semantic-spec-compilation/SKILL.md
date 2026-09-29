@@ -47,6 +47,7 @@ When the user asks broadly to process, compile, formalize, or prepare a specific
 
 - Use `references/document-structure.md` as the required concrete template for the primary SDD/SSC document. Follow its top-level section order, required fields, module hierarchy, and table columns. Use optional sections only where the template allows them or the user explicitly requests another structure.
 - Within every feature, use exactly four ordered blocks: User Stories, related Use Cases, Functional Requirements, Acceptance Criteria. Place typed UI, data, integration, security, and operational requirements inside the Functional Requirements block.
+- Render every use case in the mandatory shape defined by `references/document-structure.md`: a `Field | Value` card, a two-column `Actor action | System response` main-scenario table, and step-bound alternative scenarios such as `2а` with child steps `2а1`, `2а2`. Do not replace this shape with prose, bullets, or a single-column step list.
 - Do not create separate sections or columns for compilation metadata. Put source maturity under source reliability, overall status in the passport, and unresolved decisions in open questions. Before delivery, compare the heading hierarchy and table columns with the template.
 - Do not display INVEST or another internal quality score in the compiled document unless the user explicitly asks for it.
 - In a User Story card, do not repeat the parent feature, related use case, requirement IDs, or acceptance criteria IDs. The sequential document structure and final traceability matrix carry those relationships.
@@ -116,6 +117,7 @@ Check the model against these quality gates:
 - Each feature belongs to one epic, each epic belongs to one module, and each user story is placed under a feature.
 - Each user story states an actor or beneficiary, need, and value, unless a different approved story format preserves the same meaning.
 - Each feature is followed by its related use case or use cases, functional requirements, and testable acceptance criteria.
+- Each use-case main-scenario step has one unique row identifier. Every alternative references an existing main-scenario step, uses the required branch numbering, and ends with an explicit return to a named main-scenario step or an explicit completion outcome.
 - Module-level non-functional requirements appear after all features of that module; cross-system NFRs are stated once at the broadest applicable scope.
 - Each process has a trigger, actor, happy path, alternative path, and completion condition.
 - Each integration has producer, consumer, transport, payload, idempotency, retry, error handling, and monitoring behavior.

@@ -137,18 +137,51 @@ Keep those relationships in the canonical model and expose them in the traceabil
 
 #### Use Case
 
-Use `UC-###. <Title>` and capture:
+Use the following mandatory shape for every use case. Do not replace it with prose, a numbered list, bullets, or a one-column table.
 
-- Primary actor
-- Goal
-- Trigger
-- Preconditions
-- Main scenario
-- Alternative scenarios
-- Exceptions and errors when they are distinct from alternatives
-- Postconditions
+```markdown
+**UC-###. <Title>**
 
-Include data used and participating systems only when they materially clarify the scenario. Do not create one use case per story mechanically. Group stories under one use case when they represent parts of the same end-to-end interaction.
+| Field | Value |
+|---|---|
+| Primary actor |  |
+| Goal |  |
+| Trigger |  |
+| Preconditions |  |
+
+**Main scenario:**
+
+| Actor action | System response |
+|---|---|
+| 1. <Actor action> | 1. <System response> |
+|  | 2. <System-only action, when applicable> |
+| 3. <Actor action> | 3. <System response> |
+
+**Alternative scenarios:**
+
+**2а. <Alternative title>**
+
+2а1. <Alternative action or response>.
+2а2. <Alternative action or response>.
+2а3. The scenario returns to step 2 of the main scenario, or ends with an explicit outcome.
+
+**Postconditions:**
+
+- <Observable resulting state>.
+```
+
+Apply these rules exactly:
+
+- The main-scenario table has exactly two columns: `Actor action` and `System response`.
+- Each row represents one logical step and has one unique sequential integer identifier.
+- When both cells in a row are populated, repeat the same step identifier in both cells. Do not number the actor action and system response as separate steps.
+- For a system-only step, leave the actor cell empty and put the numbered action in the system cell. For an actor-only step, apply the inverse rule.
+- Number alternative scenarios as `<main-step><Cyrillic lowercase letter>`, for example `2а`, `2б`, `4а`. The numeric prefix must reference an existing main-scenario step.
+- Number child steps by appending an integer to the branch identifier, for example `2а1`, `2а2`, `2а3`.
+- End every alternative with either an explicit return to a numbered main-scenario step or an explicit completion outcome. Do not use an implicit continuation.
+- Keep exceptions and errors in the same numbered alternative-scenario format unless the user explicitly requests a separate exception catalog.
+- Include data used and participating systems in the field card only when they materially clarify the scenario.
+- Do not create one use case per story mechanically. Group stories under one use case when they represent parts of the same end-to-end interaction.
 
 #### Functional Requirements
 

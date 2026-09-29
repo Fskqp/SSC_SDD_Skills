@@ -161,6 +161,25 @@ Each use case should include:
 - `requirement_refs`
 - `source_refs`
 
+Represent `main_flow` as an ordered array of row records:
+
+- `step_id`: a unique sequential integer used by the rendered two-column table.
+- `actor_action`: actor action for the row, or `null` for a system-only step.
+- `system_response`: system response for the row, or `null` for an actor-only step.
+
+At least one action field must be populated. When both fields are populated, both belong to the same `step_id`; do not assign separate numbers to the two cells.
+
+Represent `alternative_flows` as an ordered array of branch records:
+
+- `id`: `<main-step><Cyrillic lowercase letter>`, for example `2а`.
+- `branches_from_step_id`: the existing `main_flow.step_id` referenced by the numeric prefix.
+- `title`.
+- `steps`: ordered records with IDs such as `2а1`, `2а2` and an atomic `statement`.
+- `outcome`: `return`, `complete`, or `error`.
+- `return_to_step_id`: an existing `main_flow.step_id` when `outcome` is `return`; otherwise `null`.
+
+The branch ID, `branches_from_step_id`, and every child-step ID must agree. Every alternative flow must have an explicit outcome. Store distinct exception records only when the user requests a separate exception catalog; otherwise represent errors as numbered alternative flows.
+
 ## Requirements
 
 Every requirement record must include all fields below. `id`, `type`, `title`, `statement`, `source_refs`, `priority`, and `status` must be populated. Use empty strings, empty arrays, or `null` for unresolved enrichment and relationship fields; do not omit them and do not invent values.
