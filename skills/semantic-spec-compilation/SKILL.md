@@ -15,7 +15,26 @@ The skill is optimized for business and system analysis work around 1C ERP, Bitr
 
 Do not invent missing requirements. Separate extracted facts, explicit assumptions, inferred implications, conflicts, and open questions. If the input is ambiguous, produce a usable partial compilation and list the blocking questions.
 
+## Collaboration Workflow
+
+For collaborative creation or refinement of a specification, work in stages by default. Read [references/staged-workflow.md](references/staged-workflow.md) before starting or resuming this workflow. Use this order:
+
+1. Establish the problem, goal, scope, participants, systems, and available sources.
+2. Prepare and agree the target BPMN process; describe AS IS when it helps explain the change.
+3. Prepare and agree the UML Use Case Diagram and the catalog of concrete Use Cases.
+4. Agree each User Story and its primary concrete Use Case individually, including main flow, alternatives, errors, and postconditions.
+5. Elaborate and agree requirements, business rules, data, applicable contracts, non-functional requirements, and testable acceptance criteria.
+6. Assemble and validate the complete specification using the required document template, then present it for final review.
+
+At each stage, prepare a concrete, reviewable result before requesting agreement. Present one Use Case at a time during scenario review. Move to the next stage or Use Case after explicit agreement on the current version; reuse agreement already recorded in the available context. Silence, a topic change, or an answer to one question does not approve an artifact. Track the current stage, artifact versions, decisions, open questions, and the next pending review outside the rendered specification.
+
+Existing BPMN, UML diagrams, and previously agreed scenarios are valid starting inputs. Analyze them, preserve their IDs where possible, and resume at the earliest unresolved stage. A material change to an agreed artifact requires impact analysis and renewed review of the affected versions.
+
+The user can explicitly request a single-pass draft, batch review, another stage order, or a bounded task such as reviewing an existing document. Follow that requested scope and record any skipped or deferred reviews. Apply the compilation pipeline within the active stage; the full analyst package is the final assembly target, not a requirement to emit the entire specification in every response.
+
 ## When The User Provides A Spec
+
+In staged work, apply these steps to the available source and the current stage. Do not turn source intake into an unsolicited full-document delivery or restart stages already agreed.
 
 1. Identify source type: Markdown, Word/DOCX, PDF, screenshot, meeting transcript, task text, codebase, database schema, API contract, or mixed inputs.
 2. Preserve source meaning before restructuring. Keep source terms in a glossary when they may have domain meaning.
@@ -28,7 +47,7 @@ Do not invent missing requirements. Separate extracted facts, explicit assumptio
 
 ## Default Analyst Package
 
-When the user asks broadly to process, compile, formalize, or prepare a specification, produce:
+At final assembly, or when the user explicitly requests a single-pass full-document draft, produce the following package. During staged work, deliver the current stage's artifacts and relevant questions:
 
 - Document passport.
 - Executive summary: context, problem, goal, and expected result.
