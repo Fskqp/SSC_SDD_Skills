@@ -2,6 +2,19 @@
 
 Use this reference for collaborative specification work. The default analysis order is BPMN, UML Use Case Diagram, individual textual Use Cases, requirements and acceptance criteria, then final assembly. The final document still follows `document-structure.md`; analysis order does not change its section order.
 
+## Questions, Answers, Review, Agreement
+
+Apply this cycle within every stage and separately for each concrete Use Case:
+
+1. **Ask questions.** Read the available inputs and earlier answers, identify unresolved decisions for the current stage or UC, and ask a focused set of questions. Explain known context briefly and label proposed options as proposals. Keep the questionnaire limited to the current result rather than interviewing for the entire future specification at once.
+2. **Receive answers.** Wait for the user's actual answers before preparing the result that depends on them. Record the answers and their sources. If a material ambiguity remains, ask a follow-up question; do not decide it silently. Record explicitly deferred nonblocking details as gaps. Independent analysis can continue while dependent decisions remain pending.
+3. **Show the result for review.** Build the current artifact from the answers and show its concrete version with any remaining gaps. Do not send an initial unanswered questionnaire and a completed artifact for approval in the same response. The user can comment on the result; incorporate the comments and present a revised version when the result changes.
+4. **Receive agreement.** Only after the result has been shown can the user agree to that version. Record that explicit agreement and move to the next stage or UC. Answers to questions, willingness to proceed, and an earlier approval of a different version do not approve the new result.
+
+Reuse answers already supplied in the conversation or reliable source materials. When all necessary questions have already been answered, state that those inputs cover the current questions and proceed to result preparation without a redundant interview. This completes clarification only; the prepared result still needs its own review and agreement.
+
+For example, before detailing UC-003, ask about its trigger, preconditions, behavior, relevant errors, and observable outcome where these are unresolved. After the user answers, show the User Story and complete UC-003 card for review. Accept `UC-003 согласован` only for the version shown, not as a substitute for showing it.
+
 ## 1. Intake And Boundaries
 
 Start from the materials already available. The initial brief should establish:
@@ -13,7 +26,7 @@ Start from the materials already available. The initial brief should establish:
 - Known business rules, constraints, and examples of documents or data.
 - Available sources such as tasks, meeting notes, diagrams, API contracts, or an earlier specification.
 
-These are intake topics, not a demand that the user deliver a finished analysis. If something is missing, draft the known part, mark gaps, and ask focused questions about decisions needed for the current stage. Do not invent a role, integration behavior, limit, retry policy, or acceptance threshold.
+These are intake topics, not a demand that the user deliver a finished analysis. Start with focused questions about missing decisions and receive the answers before preparing the brief for review. If answers leave nonblocking gaps, mark them in the draft. Do not invent a role, integration behavior, limit, retry policy, or acceptance threshold.
 
 Present a short brief and the proposed scope for agreement. Record unresolved items as questions with their blocker severity and affected artifacts.
 
@@ -37,7 +50,7 @@ At this stage, catalog entries can remain explicit draft candidates while their 
 
 ## 4. Review Each User Story And Concrete Use Case
 
-Work through the agreed catalog one concrete UC at a time unless the user requests a batch. Place the User Story under its module, epic, and feature, then immediately show its primary concrete Use Case. Follow `document-structure.md` exactly for the cards and scenario tables.
+Work through the agreed catalog one concrete UC at a time unless the user requests a batch. Before writing its review packet, ask the unresolved questions about that UC and receive the user's answers using the interaction cycle above. Then place the User Story under its module, epic, and feature and immediately show its primary concrete Use Case. Follow `document-structure.md` exactly for the cards and scenario tables.
 
 The review packet includes:
 
@@ -80,10 +93,11 @@ Maintain a compact working checkpoint separately from the primary specification.
 
 Record:
 
-- Current stage, scope, and artifact versions.
+- Current stage, interaction phase (questions, waiting for answers, result for review, or waiting for agreement), scope, and artifact versions.
 - Review states such as `Draft`, `In review`, `Agreed`, and `Needs review`.
 - The UC catalog and the current and remaining scenario review queue.
 - Explicit user agreements, the artifact IDs and exact versions they cover, and their source in the available conversation or supplied review record.
+- User answers and the questions or decisions they resolve, separately from artifact agreements.
 - Open questions with severity and affected artifact IDs.
 - Deferred or skipped reviews and the next expected action.
 
@@ -96,7 +110,7 @@ When a requested change affects an agreed artifact:
 1. Preserve its stable ID and create a new working version.
 2. Identify the affected BPMN elements, diagram relations, User Stories, UCs, rules, requirements, contracts, and acceptance criteria through traceability.
 3. Keep the previous agreement tied to its previous version. Mark materially changed versions `Needs review`; preserve unaffected agreements.
-4. Show a concise change summary and present the affected versions for renewed review at the appropriate stage. Do not silently change agreed behavior or restart unrelated stages.
+4. Use the requested change as an input, ask about any unresolved implications, and receive the needed answers before showing the revised result. Present the affected versions with a concise change summary for renewed review and agreement at the appropriate stage. Do not silently change agreed behavior or restart unrelated stages.
 
 Pure formatting corrections can retain the existing agreement when meaning and behavior are unchanged; note the correction without requiring a full scenario review.
 

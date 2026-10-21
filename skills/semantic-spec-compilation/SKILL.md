@@ -13,7 +13,7 @@ The skill is optimized for business and system analysis work around 1C ERP, Bitr
 
 ## Core Rule
 
-Do not invent missing requirements. Separate extracted facts, explicit assumptions, inferred implications, conflicts, and open questions. If the input is ambiguous, produce a usable partial compilation and list the blocking questions.
+Do not invent missing requirements. Separate extracted facts, explicit assumptions, inferred implications, conflicts, and open questions. In staged collaboration, clarify ambiguous inputs through questions and answers before presenting a result for review. Produce a usable partial compilation when answers leave gaps or the user explicitly requests a single-pass draft, and list the blocking questions.
 
 ## Collaboration Workflow
 
@@ -26,7 +26,14 @@ For collaborative creation or refinement of a specification, work in stages by d
 5. Elaborate and agree requirements, business rules, data, applicable contracts, non-functional requirements, and testable acceptance criteria.
 6. Assemble and validate the complete specification using the required document template, then present it for final review.
 
-At each stage, prepare a concrete, reviewable result before requesting agreement. Present one Use Case at a time during scenario review. Move to the next stage or Use Case after explicit agreement on the current version; reuse agreement already recorded in the available context. Silence, a topic change, or an answer to one question does not approve an artifact. Track the current stage, artifact versions, decisions, open questions, and the next pending review outside the rendered specification.
+For every stage and every individual Use Case, follow this interaction cycle:
+
+1. Ask focused clarification questions using the available sources and earlier answers.
+2. Receive the user's answers; clarify remaining decisions that block the current result.
+3. Prepare and show a concrete, versioned result based on those answers for the user's review. Incorporate review comments and show the revised result when needed.
+4. Obtain the user's explicit agreement to that presented version before advancing to the next stage or Use Case.
+
+Questions and answers precede the result submitted for agreement. Do not present a completed scenario for approval alongside the initial unanswered questionnaire. Reuse answers already supplied instead of asking the same questions again; if all necessary questions have already been answered in the available context, state that and prepare the result. An answer, silence, a topic change, or an instruction to prepare something is not agreement to an unseen or revised artifact. Present one Use Case at a time and reuse agreement already recorded for an unchanged version. Track the current stage, interaction phase, artifact versions, answers, decisions, open questions, and the next pending review outside the rendered specification.
 
 Existing BPMN, UML diagrams, and previously agreed scenarios are valid starting inputs. Analyze them, preserve their IDs where possible, and resume at the earliest unresolved stage. A material change to an agreed artifact requires impact analysis and renewed review of the affected versions.
 
