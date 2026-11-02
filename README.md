@@ -4,6 +4,25 @@
 
 It accepts Markdown or Word specifications, meeting and interview notes, task descriptions, screenshots, schemas, API contracts, and mixed source materials. The skill separates confirmed facts, assumptions, inferred implications, conflicts, and open questions instead of inventing missing requirements.
 
+## Collaboration Workflow
+
+Collaborative specification work follows these stages by default:
+
+1. Establish the problem, goal, scope, participants, systems, and available sources.
+2. Prepare and agree the target BPMN process; describe AS IS when it helps explain the change.
+3. Prepare and agree the UML Use Case Diagram and the catalog of concrete Use Cases.
+4. Agree each User Story and its primary concrete Use Case individually.
+5. Elaborate and agree requirements, business rules, data, applicable contracts, non-functional requirements, and acceptance criteria.
+6. Assemble and validate the complete specification, then present it for final review.
+
+Within every stage and for each concrete Use Case, ask focused clarification questions, receive the user's answers, show a concrete version for review, incorporate comments, and obtain explicit agreement to that presented version before advancing. Reuse answers already supplied. Answers, silence, and an instruction to prepare an artifact do not approve an unseen or revised result. Do not present a completed scenario for approval alongside the initial unanswered questionnaire.
+
+Resume from the earliest unresolved stage using existing diagrams, stable IDs, and recorded agreements. Keep stage, interaction phase, artifact versions, answers, decisions, open questions, and pending reviews in a separate working checkpoint. Material changes to agreed artifacts require impact analysis and renewed review of affected versions.
+
+The user can request a single-pass draft, batch review, another stage order, or a bounded task such as auditing an existing document. Record skipped or deferred reviews without treating them as agreed. The complete analyst package is the final assembly target; intermediate responses contain the active stage's artifacts and relevant questions.
+
+See [the staged workflow reference](skills/semantic-spec-compilation/references/staged-workflow.md) for the complete interaction and review rules.
+
 ## Default Document Format
 
 The primary specification uses this order:
@@ -19,20 +38,34 @@ The primary specification uses this order:
 9. Open questions
 10. Optional technical appendices
 
-Functionality is organized as:
+Before the details of every module, show its complete hierarchy as a fenced `text` tree. Include all actual epics, features, and user stories; each level can have multiple children:
 
 ```text
-Module
-└── Epic
-    └── Feature
-        └── User Story
+MOD-001 Module
+├── EPIC-001 First epic
+│   ├── FEAT-001 First feature
+│   │   └── US-001 First story
+│   └── FEAT-002 Second feature
+│       ├── US-002 Second story
+│       └── US-003 Third story
+└── EPIC-002 Second epic
+    ├── FEAT-003 Third feature
+    │   └── US-004 Fourth story
+    └── FEAT-004 Fourth feature
+        ├── US-005 Fifth story
+        └── US-006 Sixth story
 ```
+
+Preserve vertical continuation lines and use `└──` only for the last child. The tree ends at User Stories; document concrete Use Cases in the feature details.
 
 Every feature is documented sequentially:
 
 ```text
-User Stories
-Use Case or Use Cases
+User Story 1
+Primary concrete Use Case for User Story 1
+User Story 2
+Primary concrete Use Case for User Story 2
+...repeat for every story...
 Functional Requirements
 Acceptance Criteria
 ```
@@ -43,11 +76,22 @@ Module-level non-functional requirements follow the module's functional content.
 
 - User Story cards contain the story, value, priority, and material dependencies.
 - Parent Feature, related Use Case, requirement IDs, acceptance criteria IDs, and INVEST scores are not repeated in User Story cards.
-- Those relationships remain in the canonical model. Applicable cross-artifact links appear in the traceability matrix, with Module and Feature columns added when needed to remove ambiguity.
+- Those relationships remain in the canonical model. The adjacent Use Case card and the traceability matrix expose the primary User Story/Use Case relationship. Add Module and Feature columns to the matrix when needed to remove ambiguity.
 - INVEST may be used as an internal quality check but is shown only when explicitly requested.
-- A User Story and a Use Case are not forced into a one-to-one relationship.
+- By default, each User Story has exactly one primary concrete Use Case, placed immediately after that story. Additional links are allowed only for distinct behavior and require an explicit rationale.
+- A parent or umbrella Use Case may organize a decomposition or diagram, but it cannot be the primary Use Case of a User Story or replace its concrete scenario.
 - Unknown roles, rules, sources, thresholds, and system behavior become gaps or open questions.
 - Implementation task decomposition is not a default document section.
+
+Every concrete Use Case follows the mandatory format in [the document structure reference](skills/semantic-spec-compilation/references/document-structure.md):
+
+- The marker `Related Use Case for US-###`, followed by the concrete UC ID and title.
+- A `Field | Value` card with User Story, Parent Use Case when applicable, Primary actor, Goal, Trigger, and Preconditions.
+- A main-scenario table with exactly two columns: `Actor action | System response`. Each row has one unique sequential step identifier. Repeat the same identifier in both populated cells; leave the other cell empty for a system-only or actor-only step.
+- Alternatives and errors bound to existing main-scenario steps, using a Cyrillic lowercase letter in branch IDs such as `2а` and child IDs such as `2а1`, `2а2`. End every alternative with an explicit return to a numbered main-scenario step or an explicit completion outcome.
+- Observable postconditions.
+
+Do not replace the concrete Use Case format with prose, bullets, a numbered list, or a single-column table. The traceability matrix includes `User Story`, `Use Case`, `Link Type`, `Link Rationale`, `Requirements`, `Business Rules`, and `Acceptance Criteria`; every story has exactly one `Primary` row with its concrete Use Case, and `Additional` rows require a rationale.
 
 ## Stable IDs
 
@@ -57,7 +101,9 @@ The skill supports stable identifiers for:
 - `EPIC-###`: epics
 - `FEAT-###`: features
 - `US-###`: user stories
-- `UC-###`: use cases
+- `UC-##`: parent or umbrella use cases
+- `UC-##.##`: concrete child use cases
+- `UC-###`: standalone concrete use cases when no parent exists
 - `FR-###`: functional requirements
 - `NFR-###`: non-functional requirements
 - `BR-###`: business rules
@@ -98,6 +144,7 @@ skills/semantic-spec-compilation/
     artifact-templates.md
     canonical-model.md
     document-structure.md
+    staged-workflow.md
     stack-patterns.md
   scripts/
     compile_spec.py
