@@ -257,11 +257,13 @@ If a rule applies only to one module or feature, preserve that scope in the cano
 
 Use this compact matrix:
 
-| User Story | Use Case | Link Type | Link Rationale | Requirements | Business Rules | Acceptance Criteria |
-|---|---|---|---|---|---|---|
-| US-001 | UC-01.01 | Primary | Concrete scenario for the story goal | FR-001, NFR-001 | BR-001 | AC-001 |
+| Business Requirement | User Story | Use Case | Link Type | Link Rationale | Requirements | Business Rules | Acceptance Criteria |
+|---|---|---|---|---|---|---|---|
+| BREQ-001 | US-001 | UC-01.01 | Primary | Concrete scenario for the story goal | FR-001, NFR-001 | BR-001 | AC-001 |
 
 Use these columns in the primary document. Every User Story has exactly one `Primary` row with a concrete Use Case. Add rows of type `Additional` only with a meaningful rationale. A parent or umbrella Use Case cannot be used in a `Primary` row. Do not add a `Source` column by default. For a multi-module document, add `Module` and `Feature` columns only when needed to remove ambiguity. Maintain source-level traceability in the canonical model and add it to the rendered matrix only when the user explicitly requests source traceability.
+
+In `Business Requirement`, list the source-backed business requirement IDs (`BREQ-###`) realized by the story. Keep multiple IDs in one cell of the existing `Primary` row; do not create extra primary rows for different business requirements. Preserve existing source IDs and resolve them through the canonical model's `business_requirement_refs` and `source_refs`. A solution passport may provide this business basis, but is not required. `BREQ` identifies a business requirement; `BR` identifies a business rule. Keep their original statements in the cited source rather than copying them into User Story cards. If the business requirement link is unknown, write `Requires clarification (Q-###)` and record the question; use `Not applicable` only when supported by an explicit source or decision.
 
 ## 9. Open Questions
 

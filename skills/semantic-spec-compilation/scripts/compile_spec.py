@@ -396,6 +396,7 @@ def compile_model(input_path: Path) -> dict:
         "traceability": [
             {
                 "source_refs": [source_ref],
+                "business_requirement_refs": [],
                 "module_ref": None,
                 "epic_ref": None,
                 "feature_ref": None,

@@ -308,6 +308,7 @@ Traceability links source fragments to requirements and generated artifacts:
 ```json
 {
   "source_refs": ["SRC-001#section-3"],
+  "business_requirement_refs": ["BREQ-001"],
   "module_ref": "MOD-001",
   "epic_ref": "EPIC-001",
   "feature_ref": "FEAT-001",
@@ -328,6 +329,8 @@ Traceability links source fragments to requirements and generated artifacts:
 ```
 
 Render the primary reference as `Link Type: Primary`. Render each additional link as a separate `Link Type: Additional` row and carry its rationale into the traceability matrix. Never render an umbrella Use Case as the primary link.
+
+`business_requirement_refs` contains the source-backed business requirement IDs realized by the linked User Story. Preserve existing IDs; use `BREQ-###` for newly assigned business requirement IDs and keep them distinct from `BR-###` business rules. The cited `source_refs` must locate the business requirements, including external records such as a solution passport when one exists. A separate business requirement catalog is not mandatory. Multiple business requirements remain in this array and in one `Primary` matrix row for the story. When the link is unknown, emit an empty array and an open question; do not invent a BREQ, infer a link from ID proximity, or treat an empty array as evidence of non-applicability. A first-pass compiler may leave the array empty for analyst review.
 
 ## Open Questions
 

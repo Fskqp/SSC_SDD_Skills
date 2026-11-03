@@ -16,11 +16,13 @@ Use these templates for optional analyst artifacts and appendices. Use `document
 
 ## Traceability Matrix
 
-| User Story | Use Case | Link Type | Link Rationale | Requirements | Business Rules | Acceptance Criteria |
-| --- | --- | --- | --- | --- | --- | --- |
-| US-001 | UC-01.01 | Primary | Concrete scenario for the story goal | FR-001, NFR-001 | BR-001 | AC-001 |
+| Business Requirement | User Story | Use Case | Link Type | Link Rationale | Requirements | Business Rules | Acceptance Criteria |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| BREQ-001 | US-001 | UC-01.01 | Primary | Concrete scenario for the story goal | FR-001, NFR-001 | BR-001 | AC-001 |
 
 Every User Story has exactly one `Primary` row with a concrete Use Case. Put every justified extra relation in a separate `Additional` row and state its rationale. Never use a parent or umbrella Use Case in a `Primary` row. Do not add a `Source` column by default. Add `Module` and `Feature` columns for multi-module documents only when needed to remove ambiguity. Keep source-level links in the canonical model unless the user explicitly requests them in the rendered matrix.
+
+Apply the `Business Requirement` / `BREQ` rules from section 8 of `document-structure.md`: source-backed IDs, multiple IDs in the same story row, and an open question for an unknown business requirement link. Do not confuse business requirements with `BR` business rules.
 
 ## BPMN Outline
 
